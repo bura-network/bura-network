@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bura Network — Mağaza</title>
+<title>Bura Network — Klasik Survival</title>
 <style>
 /* Koyu Tema (Varsayılan) */
 :root {
@@ -35,12 +35,27 @@ body.light-theme {
   --badge-bg: rgba(124, 58, 237, 0.1);
 }
 
+/* Pembe Tema Sınıfı */
+body.pink-theme {
+  --bg-color: #fff1f2;
+  --card-bg: #ffffff;
+  --card-border: rgba(244, 63, 94, 0.15);
+  --primary: #f43f5e;
+  --primary-hover: #e11d48;
+  --accent: #fb7185;
+  --text-main: #4c0519;
+  --text-muted: #9f1239;
+  --header-bg: rgba(255, 255, 255, 0.95);
+  --sidebar-card: #ffffff;
+  --badge-bg: rgba(244, 63, 94, 0.1);
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; transition: background 0.2s, color 0.2s, border-color 0.2s; }
 body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
 
 /* Üst Duyuru / İndirim Bandı */
 .top-banner {
-  background: linear-gradient(90deg, #7c3aed, #4f46e5);
+  background: linear-gradient(90deg, var(--primary), var(--accent));
   color: #fff;
   text-align: center;
   padding: 8px 15px;
@@ -95,19 +110,7 @@ header {
   gap: 12px;
 }
 
-.user-box {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-size: 13px;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.theme-toggle, .cart-toggle {
+.theme-toggle {
   background: var(--badge-bg);
   border: 1px solid var(--card-border);
   color: var(--accent);
@@ -121,7 +124,7 @@ header {
   justify-content: center;
   transition: 0.2s;
 }
-.theme-toggle:hover, .cart-toggle:hover { filter: brightness(1.1); }
+.theme-toggle:hover { filter: brightness(1.1); }
 
 /* Ana İçerik Konteynerı */
 .container {
@@ -195,7 +198,7 @@ aside {
 .server-ip-widget .label { font-size: 11px; color: var(--text-muted); font-weight: bold; }
 .server-ip-widget .ip { font-family: monospace; font-size: 14px; color: var(--text-main); margin-top: 4px; font-weight: bold; }
 
-/* Sağ Ürün Listeleme Alanı */
+/* Sağ İçerik Alanı */
 .content-area {
   display: flex;
   flex-direction: column;
@@ -264,36 +267,7 @@ aside {
   color: var(--text-muted);
   line-height: 1.4;
   margin-bottom: 15px;
-  min-height: 35px;
 }
-
-.product-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid var(--card-border);
-  padding-top: 12px;
-  margin-top: auto;
-}
-
-.price {
-  font-size: 17px;
-  font-weight: 800;
-  color: var(--accent);
-}
-
-.buy-btn {
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  padding: 7px 14px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 12px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.buy-btn:hover { background: var(--primary-hover); }
 
 /* Footer */
 footer {
@@ -335,27 +309,21 @@ footer {
 <body>
 
   <div class="top-banner">
-    🎉 Mağaza Açılışına Özel Tüm Ürünlerde %20 İndirim Başladı! oyna.buranw.com
+    ⚔️ Claim Sistemi Yok • Saf Klasik Survival Deneyimi! oyna.buranw.com
   </div>
 
   <header>
     <a href="#" class="logo-area">
-      BURA <span>STORE</span>
+      BURA <span>NETWORK</span>
     </a>
     <div class="nav-links">
-      <a href="#" class="active">Mağaza</a>
+      <a href="#" class="active">Ana Sayfa</a>
       <a href="https://whatsapp.com/channel/0029Vb8scio6BIEdFcgGQT3x" target="_blank">WhatsApp Kanalı</a>
-      <a href="#">Destek / Forum</a>
+      <a href="#">Kurallar & Bilgi</a>
     </div>
     <div class="header-right">
-      <div class="user-box">
-        👤 <span>Giriş Yapılmadı</span>
-      </div>
       <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="Tema Değiştir">
         🌙
-      </button>
-      <button class="cart-toggle" onclick="openCart()">
-        🛒 Sepet (<span id="cartCount">0</span>)
       </button>
     </div>
   </header>
@@ -364,12 +332,10 @@ footer {
     <!-- Sol Kategori Paneli -->
     <aside>
       <div class="sidebar-card">
-        <div class="sidebar-title">Kategoriler</div>
+        <div class="sidebar-title">Menü</div>
         <div class="category-list">
-          <button class="category-btn active" onclick="filterCategory('all', this)"><span>👑 Tüm Ürünler</span></button>
-          <button class="category-btn" onclick="filterCategory('vip', this)"><span>⭐ VIP Paketleri</span></button>
-          <button class="category-btn" onclick="filterCategory('keys', this)"><span>🗝️ Kasa Anahtarları</span></button>
-          <button class="category-btn" onclick="filterCategory('economy', this)"><span>💰 Oyun Parası</span></button>
+          <button class="category-btn active" onclick="filterCategory('all', this)"><span>🌲 Genel Bakış</span></button>
+          <button class="category-btn" onclick="filterCategory('features', this)"><span>⚙️ Sistemler</span></button>
         </div>
       </div>
 
@@ -382,94 +348,51 @@ footer {
       </div>
     </aside>
 
-    <!-- Sağ Ürün Vitrini -->
+    <!-- Sağ İçerik Alanı -->
     <main class="content-area">
       <div class="page-header-card">
-        <h1>Klasik Survival Mağazası</h1>
-        <p>Saf hayatta kalma deneyimini doruklarda yaşa. Claim sistemi olmayan bu adil ve keyifli dünyada gücünü artıracak ayrıcalıkları hemen satın al.</p>
+        <h1>Klasik Survival Dünyası</h1>
+        <p>Claim korumalarının olmadığı, tamamen saf, adil ve dostane yardımlaşmaya dayalı hayatta kalma deneyimi Bura Network'te seni bekliyor.</p>
       </div>
 
       <div class="products-grid" id="productGrid">
         
-        <!-- Ürün 1 -->
-        <div class="product-card" data-category="vip">
-          <span class="badge">EN ÇOK SATAN</span>
+        <!-- Kart 1 -->
+        <div class="product-card" data-category="features">
+          <span class="badge">ÖZELLİK</span>
           <div>
-            <div class="product-icon">👑</div>
-            <h3>VIP Üyelik (30 Gün)</h3>
-            <p>Özel renkli sohbet, ekstra home hakkı, özel kitler ve ayrıcalıklı unvan.</p>
-          </div>
-          <div class="product-footer">
-            <span class="price">₺49.99</span>
-            <button class="buy-btn" onclick="addToCart('VIP Üyelik (30 Gün)', 49.99)">Sepete Ekle</button>
+            <div class="product-icon">🛡️</div>
+            <h3>Claimsiz Yapı</h3>
+            <p>Bölgeleri koruma altına alan claim sistemi yok; tamamen geleneksel ve güvene dayalı yapılaşma.</p>
           </div>
         </div>
 
-        <!-- Ürün 2 -->
-        <div class="product-card" data-category="vip">
-          <span class="badge">ÖNERİLEN</span>
+        <!-- Kart 2 -->
+        <div class="product-card" data-category="features">
+          <span class="badge">SİSTEM</span>
           <div>
-            <div class="product-icon">🌟</div>
-            <h3>VIP+ Üyelik (30 Gün)</h3>
-            <p>Tüm standart VIP özelliklerine ek olarak fazladan uçuş avantajı ve gelişmiş kitler.</p>
-          </div>
-          <div class="product-footer">
-            <span class="price">₺89.99</span>
-            <button class="buy-btn" onclick="addToCart('VIP+ Üyelik (30 Gün)', 89.99)">Sepete Ekle</button>
+            <div class="product-icon">🤝</div>
+            <h3>Dostane Topluluk</h3>
+            <p>Yardımlaşmanın ön planda olduğu, oyuncuların birlikte devasa yapılar inşa ettiği samimi ortam.</p>
           </div>
         </div>
 
-        <!-- Ürün 3 -->
-        <div class="product-card" data-category="keys">
-          <span class="badge">AVANTAJLI</span>
+        <!-- Kart 3 -->
+        <div class="product-card" data-category="features">
+          <span class="badge">ADİL</span>
           <div>
-            <div class="product-icon">🗝️</div>
-            <h3>5x Efsanevi Anahtar</h3>
-            <p>Sunucu kasalarından nadir eşyalar, zırhlar ve güçlü silahlar düşürme şansı yakala.</p>
-          </div>
-          <div class="product-footer">
-            <span class="price">₺29.99</span>
-            <button class="buy-btn" onclick="addToCart('5x Efsanevi Anahtar', 29.99)">Sepete Ekle</button>
+            <div class="product-icon">⚖️</div>
+            <h3>P2W Karşıtı</h3>
+            <p>Para ile üstünlük sağlatan hiçbir ayrıcalık bulunmaz. Herkes tamamen eşit şartlarda yarışır.</p>
           </div>
         </div>
 
-        <!-- Ürün 4 -->
-        <div class="product-card" data-category="keys">
+        <!-- Kart 4 -->
+        <div class="product-card" data-category="features">
           <div>
-            <div class="product-icon">🔑</div>
-            <h3>1x Efsanevi Anahtar</h3>
-            <p>Tekli kasa açılımı yaparak şansını hemen dene.</p>
-          </div>
-          <div class="product-footer">
-            <span class="price">₺7.99</span>
-            <button class="buy-btn" onclick="addToCart('1x Efsanevi Anahtar', 7.99)">Sepete Ekle</button>
-          </div>
-        </div>
-
-        <!-- Ürün 5 -->
-        <div class="product-card" data-category="economy">
-          <div>
-            <div class="product-icon">💰</div>
-            <h3>1 Milyon Oyun Parası</h3>
-            <p>Ekonomide anında dev bir adım at, en iyi eşyalara ve ticaret gücüne sahip ol.</p>
-          </div>
-          <div class="product-footer">
-            <span class="price">₺19.99</span>
-            <button class="buy-btn" onclick="addToCart('1 Milyon Oyun Parası', 19.99)">Sepete Ekle</button>
-          </div>
-        </div>
-
-        <!-- Ürün 6 -->
-        <div class="product-card" data-category="economy">
-          <span class="badge">MEGA</span>
-          <div>
-            <div class="product-icon">💎</div>
-            <h3>5 Milyon Oyun Parası</h3>
-            <p>Sunucunun en zengin tüccarlarından biri olmak için devasa bütçe desteği.</p>
-          </div>
-          <div class="product-footer">
-            <span class="price">₺69.99</span>
-            <button class="buy-btn" onclick="addToCart('5 Milyon Oyun Parası', 69.99)">Sepete Ekle</button>
+            <div class="product-icon">🗺️</div>
+            <h3>Sınırsız Keşif</h3>
+            <p>Geniş dünya sınırlarıyla yeni biyomları keşfet, kendi üssünü gizli noktalarda kur.</p>
           </div>
         </div>
 
@@ -481,25 +404,9 @@ footer {
     © 2026 Bura Network • Tüm hakları saklıdır. Mojang AB ile ilişkilendirilmemiştir.
   </footer>
 
-  <div class="toast" id="toast">Ürün başarıyla sepete eklendi!</div>
+  <div class="toast" id="toast">İşlem başarılı!</div>
 
   <script>
-    let cartItemCount = 0;
-
-    function addToCart(productName, price) {
-      cartItemCount++;
-      document.getElementById('cartCount').innerText = cartItemCount;
-      showToast(`"${productName}" sepete eklendi! 🛒`);
-    }
-
-    function openCart() {
-      if(cartItemCount === 0) {
-        alert("Sepetinizde henüz ürün bulunmuyor.");
-      } else {
-        alert(`Sepetinizde ${cartItemCount} ürün var. Ödeme sayfasına yönlendiriliyorsunuz...`);
-      }
-    }
-
     function copyIP() {
       navigator.clipboard.writeText("oyna.buranw.com");
       showToast("Sunucu IP adresi kopyalandı! 📋");
@@ -528,17 +435,25 @@ footer {
       });
     }
 
-    // Tema Değiştirme Fonksiyonu
+    // 3'lü Tema Döngüsü (Koyu -> Açık -> Pembe)
     function toggleTheme() {
       const body = document.body;
       const themeBtn = document.getElementById('themeBtn');
       
-      body.classList.toggle('light-theme');
-      
-      if(body.classList.contains('light-theme')) {
+      if (!body.classList.contains('light-theme') && !body.classList.contains('pink-theme')) {
+        // Koyu -> Açık
+        body.classList.add('light-theme');
         themeBtn.innerText = '☀️';
         localStorage.setItem('bura_theme', 'light');
+      } else if (body.classList.contains('light-theme')) {
+        // Açık -> Pembe
+        body.classList.remove('light-theme');
+        body.classList.add('pink-theme');
+        themeBtn.innerText = '🌸';
+        localStorage.setItem('bura_theme', 'pink');
       } else {
+        // Pembe -> Koyu
+        body.classList.remove('pink-theme');
         themeBtn.innerText = '🌙';
         localStorage.setItem('bura_theme', 'dark');
       }
@@ -547,9 +462,16 @@ footer {
     // Sayfa açıldığında kayıtlı temayı yükleme
     window.onload = () => {
       const savedTheme = localStorage.getItem('bura_theme');
+      const themeBtn = document.getElementById('themeBtn');
+      
       if(savedTheme === 'light') {
         document.body.classList.add('light-theme');
-        document.getElementById('themeBtn').innerText = '☀️';
+        themeBtn.innerText = '☀️';
+      } else if(savedTheme === 'pink') {
+        document.body.classList.add('pink-theme');
+        themeBtn.innerText = '🌸';
+      } else {
+        themeBtn.innerText = '🌙';
       }
     };
   </script>
