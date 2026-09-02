@@ -196,7 +196,7 @@ aside {
   border: 1px solid var(--card-border);
 }
 .server-ip-widget .label { font-size: 11px; color: var(--text-muted); font-weight: bold; }
-.server-ip-widget .ip { font-family: monospace; font-size: 14px; color: var(--text-main); margin-top: 4px; font-weight: bold; }
+.server-ip-widget .ip { font-family: monospace; font-size: 13px; color: var(--text-main); margin-top: 4px; font-weight: bold; word-break: break-all; }
 
 /* Sağ İçerik Alanı */
 .content-area {
@@ -309,7 +309,7 @@ footer {
 <body>
 
   <div class="top-banner">
-    ⚔️ Claim Sistemi Yok • Saf Klasik Survival Deneyimi! oyna.buranw.com
+    ⚔️ Claim Sistemi Yok • Saf Klasik Survival Deneyimi! buranw.aternos.me
   </div>
 
   <header>
@@ -335,7 +335,8 @@ footer {
         <div class="sidebar-title">Menü</div>
         <div class="category-list">
           <button class="category-btn active" onclick="filterCategory('all', this)"><span>🌲 Genel Bakış</span></button>
-          <button class="category-btn" onclick="filterCategory('features', this)"><span>⚙️ Sistemler</span></button>
+          <button class="category-btn" onclick="filterCategory('activity', this)"><span>⏱️ Aktiflik Sıralaması</span></button>
+          <button class="category-btn" onclick="filterCategory('money', this)"><span>💰 Para Sıralaması</span></button>
         </div>
       </div>
 
@@ -343,7 +344,7 @@ footer {
         <div class="sidebar-title">Sunucu Bilgisi</div>
         <div class="server-ip-widget">
           <div class="label">SUNUCU IP</div>
-          <div class="ip" id="serverIp" onclick="copyIP()" style="cursor:pointer;" title="Kopyalamak için tıkla">oyna.buranw.com 📋</div>
+          <div class="ip" id="serverIp" onclick="copyIP()" style="cursor:pointer;" title="Kopyalamak için tıkla">buranw.aternos.me 📋</div>
         </div>
       </div>
     </aside>
@@ -357,8 +358,8 @@ footer {
 
       <div class="products-grid" id="productGrid">
         
-        <!-- Kart 1 -->
-        <div class="product-card" data-category="features">
+        <!-- Genel Bakış Kartları -->
+        <div class="product-card" data-category="general">
           <span class="badge">ÖZELLİK</span>
           <div>
             <div class="product-icon">🛡️</div>
@@ -367,8 +368,7 @@ footer {
           </div>
         </div>
 
-        <!-- Kart 2 -->
-        <div class="product-card" data-category="features">
+        <div class="product-card" data-category="general">
           <span class="badge">SİSTEM</span>
           <div>
             <div class="product-icon">🤝</div>
@@ -377,8 +377,7 @@ footer {
           </div>
         </div>
 
-        <!-- Kart 3 -->
-        <div class="product-card" data-category="features">
+        <div class="product-card" data-category="general">
           <span class="badge">ADİL</span>
           <div>
             <div class="product-icon">⚖️</div>
@@ -387,12 +386,67 @@ footer {
           </div>
         </div>
 
-        <!-- Kart 4 -->
-        <div class="product-card" data-category="features">
+        <div class="product-card" data-category="general">
           <div>
             <div class="product-icon">🗺️</div>
             <h3>Sınırsız Keşif</h3>
             <p>Geniş dünya sınırlarıyla yeni biyomları keşfet, kendi üssünü gizli noktalarda kur.</p>
+          </div>
+        </div>
+
+        <!-- Aktiflik Sıralaması Kartları -->
+        <div class="product-card" data-category="activity" style="display:none;">
+          <span class="badge">#1 LİDER</span>
+          <div>
+            <div class="product-icon">🥇</div>
+            <h3>Player_Alpha</h3>
+            <p>Sunucuda en çok vakit geçiren oyuncu.<br><b>Toplam Süre:</b> 142 Saat</p>
+          </div>
+        </div>
+
+        <div class="product-card" data-category="activity" style="display:none;">
+          <span class="badge">#2</span>
+          <div>
+            <div class="product-icon">🥈</div>
+            <h3>Shadow_Knight</h3>
+            <p>Aktiflik sıralaması ikincisi.<br><b>Toplam Süre:</b> 118 Saat</p>
+          </div>
+        </div>
+
+        <div class="product-card" data-category="activity" style="display:none;">
+          <span class="badge">#3</span>
+          <div>
+            <div class="product-icon">🥉</div>
+            <h3>Bura_Admin</h3>
+            <p>Aktiflik sıralaması üçüncüsü.<br><b>Toplam Süre:</b> 95 Saat</p>
+          </div>
+        </div>
+
+        <!-- Para Sıralaması Kartları -->
+        <div class="product-card" data-category="money" style="display:none;">
+          <span class="badge">ZENGİN #1</span>
+          <div>
+            <div class="product-icon">💎</div>
+            <h3>MansionKing</h3>
+            <p>Sunucunun en zengin tüccarı.<br><b>Bakiye:</b> $485,200</p>
+          </div>
+        </div>
+
+        <div class="product-card" data-category="money" style="display:none;">
+          <span class="badge">ZENGİN #2</span>
+          <div>
+            <div class="product-icon">💰</div>
+            <h3>GoldMiner</h3>
+            <p>Ekonomi listesi ikincisi.<br><b>Bakiye:</b> $310,950</p>
+          </div>
+        </div>
+
+        <div class="product-card" data-category="money" style="display:none;">
+          <span class="badge">ZENGİN #3</span>
+          <div>
+            <div class="product-icon">🪙</div>
+            <h3>BuilderPro</h3>
+            <p>Ekonomi listesi üçüncüsü.<br><b>Bakiye:</b> $195,400</p>
           </div>
         </div>
 
@@ -408,7 +462,7 @@ footer {
 
   <script>
     function copyIP() {
-      navigator.clipboard.writeText("oyna.buranw.com");
+      navigator.clipboard.writeText("buranw.aternos.me");
       showToast("Sunucu IP adresi kopyalandı! 📋");
     }
 
@@ -427,7 +481,10 @@ footer {
 
       const cards = document.querySelectorAll('.product-card');
       cards.forEach(card => {
-        if(category === 'all' || card.getAttribute('data-category') === category) {
+        const cardCat = card.getAttribute('data-category');
+        if(category === 'all' && cardCat === 'general') {
+          card.style.display = 'flex';
+        } else if(category === cardCat) {
           card.style.display = 'flex';
         } else {
           card.style.display = 'none';
