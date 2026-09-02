@@ -53,7 +53,7 @@ body.pink-theme {
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; transition: background 0.2s, color 0.2s, border-color 0.2s; }
 body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
 
-/* Üst Duyuru / İndirim Bandı */
+/* Üst Duyuru Bandı */
 .top-banner {
   background: linear-gradient(90deg, var(--primary), var(--accent));
   color: #fff;
@@ -182,21 +182,50 @@ aside {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  text-decoration: none;
 }
 .category-btn:hover, .category-btn.active {
   background: var(--badge-bg);
   color: var(--accent);
 }
 
-.server-ip-widget {
+.server-ip-widget, .server-status-widget {
   background: var(--bg-color);
   border-radius: 8px;
   padding: 12px;
   margin-top: 10px;
   border: 1px solid var(--card-border);
 }
-.server-ip-widget .label { font-size: 11px; color: var(--text-muted); font-weight: bold; }
+.server-ip-widget .label, .server-status-widget .label { font-size: 11px; color: var(--text-muted); font-weight: bold; }
 .server-ip-widget .ip { font-family: monospace; font-size: 13px; color: var(--text-main); margin-top: 4px; font-weight: bold; word-break: break-all; }
+
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: bold;
+}
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #22c55e; /* Aktif yeşil renk */
+}
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #22c55e;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
 
 /* Sağ İçerik Alanı */
 .content-area {
@@ -317,9 +346,9 @@ footer {
       BURA <span>NETWORK</span>
     </a>
     <div class="nav-links">
-      <a href="#" class="active">Ana Sayfa</a>
+      <a href="#" class="active" onclick="switchTab('general', this); return false;">Ana Sayfa</a>
       <a href="https://whatsapp.com/channel/0029Vb8scio6BIEdFcgGQT3x" target="_blank">WhatsApp Kanalı</a>
-      <a href="#">Kurallar & Bilgi</a>
+      <a href="#" onclick="switchTab('rules', this); return false;">Kurallar</a>
     </div>
     <div class="header-right">
       <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="Tema Değiştir">
@@ -334,14 +363,23 @@ footer {
       <div class="sidebar-card">
         <div class="sidebar-title">Menü</div>
         <div class="category-list">
-          <button class="category-btn active" onclick="filterCategory('all', this)"><span>🌲 Genel Bakış</span></button>
-          <button class="category-btn" onclick="filterCategory('activity', this)"><span>⏱️ Aktiflik Sıralaması</span></button>
-          <button class="category-btn" onclick="filterCategory('money', this)"><span>💰 Para Sıralaması</span></button>
+          <button class="category-btn active" onclick="switchTab('general', this)"><span>🌲 Genel Bakış</span></button>
+          <button class="category-btn" onclick="switchTab('rules', this)"><span>📜 Sunucu Kuralları</span></button>
+          <a href="https://whatsapp.com/channel/0029Vb8scio6BIEdFcgGQT3x" target="_blank" class="category-btn"><span>📢 WhatsApp Kanalı</span></a>
         </div>
       </div>
 
       <div class="sidebar-card">
         <div class="sidebar-title">Sunucu Bilgisi</div>
+        <div class="server-status-widget">
+          <div class="label">ANLIK DURUM</div>
+          <div class="status-row">
+            <div class="status-indicator">
+              <span class="status-dot"></span> Aktif
+            </div>
+            <span id="playerCount" style="color:var(--text-main);">0 / 20</span>
+          </div>
+        </div>
         <div class="server-ip-widget">
           <div class="label">SUNUCU IP</div>
           <div class="ip" id="serverIp" onclick="copyIP()" style="cursor:pointer;" title="Kopyalamak için tıkla">buranw.aternos.me 📋</div>
@@ -351,15 +389,15 @@ footer {
 
     <!-- Sağ İçerik Alanı -->
     <main class="content-area">
-      <div class="page-header-card">
-        <h1>Klasik Survival Dünyası</h1>
-        <p>Claim korumalarının olmadığı, tamamen saf, adil ve dostane yardımlaşmaya dayalı hayatta kalma deneyimi Bura Network'te seni bekliyor.</p>
+      <div class="page-header-card" id="pageHeader">
+        <h1 id="headerTitle">Klasik Survival Dünyası</h1>
+        <p id="headerDesc">Claim korumalarının olmadığı, tamamen saf, adil ve dostane yardımlaşmaya dayalı hayatta kalma deneyimi Bura Network'te seni bekliyor.</p>
       </div>
 
-      <div class="products-grid" id="productGrid">
+      <div class="products-grid" id="contentGrid">
         
         <!-- Genel Bakış Kartları -->
-        <div class="product-card" data-category="general">
+        <div class="product-card" data-tab="general">
           <span class="badge">ÖZELLİK</span>
           <div>
             <div class="product-icon">🛡️</div>
@@ -368,7 +406,7 @@ footer {
           </div>
         </div>
 
-        <div class="product-card" data-category="general">
+        <div class="product-card" data-tab="general">
           <span class="badge">SİSTEM</span>
           <div>
             <div class="product-icon">🤝</div>
@@ -377,7 +415,7 @@ footer {
           </div>
         </div>
 
-        <div class="product-card" data-category="general">
+        <div class="product-card" data-tab="general">
           <span class="badge">ADİL</span>
           <div>
             <div class="product-icon">⚖️</div>
@@ -386,7 +424,7 @@ footer {
           </div>
         </div>
 
-        <div class="product-card" data-category="general">
+        <div class="product-card" data-tab="general">
           <div>
             <div class="product-icon">🗺️</div>
             <h3>Sınırsız Keşif</h3>
@@ -394,59 +432,40 @@ footer {
           </div>
         </div>
 
-        <!-- Aktiflik Sıralaması Kartları -->
-        <div class="product-card" data-category="activity" style="display:none;">
-          <span class="badge">#1 LİDER</span>
+        <!-- Kurallar Kartları -->
+        <div class="product-card" data-tab="rules" style="display:none;">
+          <span class="badge">KURAL #1</span>
           <div>
-            <div class="product-icon">🥇</div>
-            <h3>Player_Alpha</h3>
-            <p>Sunucuda en çok vakit geçiren oyuncu.<br><b>Toplam Süre:</b> 142 Saat</p>
+            <div class="product-icon">🚫</div>
+            <h3>Hile & Mod Yasak</h3>
+            <p>X-Ray, KillAura, Fly ve oyun dengesini bozan her türlü üçüncü parti hile yazılımı kalıcı yasak sebebidir.</p>
           </div>
         </div>
 
-        <div class="product-card" data-category="activity" style="display:none;">
-          <span class="badge">#2</span>
+        <div class="product-card" data-tab="rules" style="display:none;">
+          <span class="badge">KURAL #2</span>
           <div>
-            <div class="product-icon">🥈</div>
-            <h3>Shadow_Knight</h3>
-            <p>Aktiflik sıralaması ikincisi.<br><b>Toplam Süre:</b> 118 Saat</p>
+            <div class="product-icon">💬</div>
+            <h3>Küfür ve Hakaret</h3>
+            <p>Sohbet içinde diğer oyunculara ağır hakaret, argo, din/siyaset tartışması ve taciz kesinlikle yasaktır.</p>
           </div>
         </div>
 
-        <div class="product-card" data-category="activity" style="display:none;">
-          <span class="badge">#3</span>
+        <div class="product-card" data-tab="rules" style="display:none;">
+          <span class="badge">KURAL #3</span>
           <div>
-            <div class="product-icon">🥉</div>
-            <h3>Bura_Admin</h3>
-            <p>Aktiflik sıralaması üçüncüsü.<br><b>Toplam Süre:</b> 95 Saat</p>
+            <div class="product-icon">🏚️</div>
+            <h3>Tuzak & Griefing</h3>
+            <p>Claimsiz sunucularda yapı yaparken dikkatli olun; ancak açıkça yasaklı alanlara zarar vermek yasaktır.</p>
           </div>
         </div>
 
-        <!-- Para Sıralaması Kartları -->
-        <div class="product-card" data-category="money" style="display:none;">
-          <span class="badge">ZENGİN #1</span>
+        <div class="product-card" data-tab="rules" style="display:none;">
+          <span class="badge">KURAL #4</span>
           <div>
-            <div class="product-icon">💎</div>
-            <h3>MansionKing</h3>
-            <p>Sunucunun en zengin tüccarı.<br><b>Bakiye:</b> $485,200</p>
-          </div>
-        </div>
-
-        <div class="product-card" data-category="money" style="display:none;">
-          <span class="badge">ZENGİN #2</span>
-          <div>
-            <div class="product-icon">💰</div>
-            <h3>GoldMiner</h3>
-            <p>Ekonomi listesi ikincisi.<br><b>Bakiye:</b> $310,950</p>
-          </div>
-        </div>
-
-        <div class="product-card" data-category="money" style="display:none;">
-          <span class="badge">ZENGİN #3</span>
-          <div>
-            <div class="product-icon">🪙</div>
-            <h3>BuilderPro</h3>
-            <p>Ekonomi listesi üçüncüsü.<br><b>Bakiye:</b> $195,400</p>
+            <div class="product-icon">📢</div>
+            <h3>Reklam Yapmak</h3>
+            <p>Farklı sunucuların, Discord kanallarının veya dış platformların reklamını yapmak cezalandırılır.</p>
           </div>
         </div>
 
@@ -475,22 +494,49 @@ footer {
       }, 2000);
     }
 
-    function filterCategory(category, element) {
-      document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-      element.classList.add('active');
+    function switchTab(tabName, element) {
+      // Sol menü buton aktiflik yönetimi
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        if(!btn.getAttribute('href')) btn.classList.remove('active');
+      });
+      if(element && !element.getAttribute('href')) {
+        element.classList.add('active');
+      } else {
+        const targetBtn = document.querySelector(`.category-btn[onclick*="${tabName}"]`);
+        if(targetBtn) targetBtn.classList.add('active');
+      }
 
+      // Başlık ve Açıklama Değişimi
+      const titleEl = document.getElementById('headerTitle');
+      const descEl = document.getElementById('headerDesc');
+
+      if(tabName === 'rules') {
+        titleEl.innerText = "Sunucu Kuralları";
+        descEl.innerText = "Bura Network üzerinde huzurlu, adil ve keyifli bir oyun deneyimi sürdürebilmek için uymanız gereken temel kurallar aşağıdadır.";
+      } else {
+        titleEl.innerText = "Klasik Survival Dünyası";
+        descEl.innerText = "Claim korumalarının olmadığı, tamamen saf, adil ve dostane yardımlaşmaya dayalı hayatta kalma deneyimi Bura Network'te seni bekliyor.";
+      }
+
+      // Kartları Göster / Gizle
       const cards = document.querySelectorAll('.product-card');
       cards.forEach(card => {
-        const cardCat = card.getAttribute('data-category');
-        if(category === 'all' && cardCat === 'general') {
-          card.style.display = 'flex';
-        } else if(category === cardCat) {
+        if(card.getAttribute('data-tab') === tabName) {
           card.style.display = 'flex';
         } else {
           card.style.display = 'none';
         }
       });
     }
+
+    // Basit bir simülasyon ile anlık oyuncu sayısını rastgele gösterelim (istersen gerçek API ile de bağlanabilir)
+    function updatePlayerCount() {
+      const countEl = document.getElementById('playerCount');
+      const randomPlayers = Math.floor(Math.random() * 8) + 3; // 3 ile 10 arası oyuncu
+      countEl.innerText = `${randomPlayers} / 20`;
+    }
+    setInterval(updatePlayerCount, 10000);
+    updatePlayerCount();
 
     // 3'lü Tema Döngüsü (Koyu -> Açık -> Pembe)
     function toggleTheme() {
