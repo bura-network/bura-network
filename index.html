@@ -29,8 +29,18 @@ nav{
 }
 .logo{font-size:24px;font-weight:900;letter-spacing:1px}
 .logo span{color:#a855f7}
-nav a{color:#ddd;text-decoration:none;margin-left:22px;font-weight:700}
+.nav-right{display:flex;align-items:center;gap:22px;}
+nav a{color:#ddd;text-decoration:none;font-weight:700}
 nav a:hover{color:#c084fc}
+
+/* Müzik Butonu Stili */
+.music-btn{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
+  color:#fff;padding:6px 12px;border-radius:20px;cursor:pointer;font-size:13px;
+  font-weight:bold;transition:.2s;display:flex;align-items:center;gap:6px;
+}
+.music-btn:hover{background:rgba(168,85,247,.2);border-color:#a855f7;}
+
 .hero{
   min-height:78vh;display:flex;align-items:center;justify-content:center;
   text-align:center;padding:70px 20px 40px;position:relative
@@ -91,8 +101,17 @@ section{padding:70px 7%;position:relative}
 .announcement-card p{color:#cbd5e1;font-size:15px;line-height:1.6;margin:0;}
 .announcement-date{color:#94a3b8;display:block;margin-top:12px;font-size:13px;}
 
-.rules{max-width:800px;margin:auto}
+.rules-container{max-width:800px;margin:auto}
+.rule-tabs{display:flex;justify-content:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.rule-tab{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:#cbd5e1;padding:10px 20px;border-radius:10px;cursor:pointer;font-weight:bold;transition:.2s;
+}
+.rule-tab.active{background:#9333ea;color:#fff;border-color:#a855f7;box-shadow:0 4px 15px rgba(147,51,234,.3);}
+.rule-content{display:none;}
+.rule-content.active{display:block;}
 .rule{padding:17px 20px;margin:10px 0;border-radius:12px;background:rgba(255,255,255,.05);color:#dbe2ef}
+
 footer{text-align:center;padding:35px;color:#7f8a9c;border-top:1px solid rgba(255,255,255,.08)}
 .toast{
   position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);
@@ -101,7 +120,8 @@ footer{text-align:center;padding:35px;color:#7f8a9c;border-top:1px solid rgba(25
 }
 .toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:750px){
-  nav{padding:15px 5%}nav div:last-child{display:none}
+  nav{padding:15px 5%}
+  .nav-right div:not(.music-btn){display:none}
   .grid{grid-template-columns:1fr}
   section{padding:55px 5%}
 }
@@ -109,13 +129,20 @@ footer{text-align:center;padding:35px;color:#7f8a9c;border-top:1px solid rgba(25
 </head>
 <body>
 
+<audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf7f6.mp3?filename=acoustic-guitar-chill-112295.mp3" type="audio/mp3">
+</audio>
+
 <nav>
   <div class="logo">BURA <span>NETWORK</span></div>
-  <div>
-    <a href="#anasayfa">Ana Sayfa</a>
-    <a href="#duyurular">Duyurular</a>
-    <a href="#ozellikler">Özellikler</a>
-    <a href="#kurallar">Kurallar</a>
+  <div class="nav-right">
+    <div>
+      <a href="#anasayfa">Ana Sayfa</a>
+      <a href="#duyurular" style="margin-left:22px;">Duyurular</a>
+      <a href="#ozellikler" style="margin-left:22px;">Özellikler</a>
+      <a href="#kurallar" style="margin-left:22px;">Kurallar</a>
+    </div>
+    <button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵 Müzik: Kapalı</button>
   </div>
 </nav>
 
@@ -173,12 +200,31 @@ footer{text-align:center;padding:35px;color:#7f8a9c;border-top:1px solid rgba(25
 
 <section id="kurallar">
   <h2 class="title">📜 Sunucu Kuralları</h2>
-  <div class="rules">
-    <div class="rule">01 — Diğer oyunculara saygılı ol.</div>
-    <div class="rule">02 — Hile ve haksız avantaj sağlayan programlar kullanma.</div>
-    <div class="rule">03 — Spam ve reklam yapma.</div>
-    <div class="rule">04 — Sunucu düzenini bozacak davranışlardan kaçın.</div>
-    <div class="rule">05 — Yetkililerin kararlarına uy.</div>
+  <div class="rules-container">
+    <div class="rule-tabs">
+      <button class="rule-tab active" onclick="openRuleTab(event, 'genel')">Genel Kurallar</button>
+      <button class="rule-tab" onclick="openRuleTab(event, 'sohbet')">Sohbet & İletişim</button>
+      <button class="rule-tab" onclick="openRuleTab(event, 'oyun')">Oynanış & Yapı</button>
+    </div>
+
+    <div id="genel" class="rule-content active">
+      <div class="rule">01 — Diğer oyunculara ve yetkililere her zaman saygılı ol.</div>
+      <div class="rule">02 — Sunucu düzenini veya huzurunu bozacak davranışlardan kaçın.</div>
+      <div class="rule">03 — Hesap güvenliğinden tamamen oyuncunun kendisi sorumludur.</div>
+    </div>
+
+    <div id="sohbet" class="rule-content">
+      <div class="rule">01 — Sohbet penceresinde aşırı büyük harf (caps lock) kullanımından kaçın.</div>
+      <div class="rule">02 — Küfür, hakaret, argo ve dini/siyasi tartışmalar kesinlikle yasaktır.</div>
+      <div class="rule">03 — Sohbeti kirletecek şekilde gereksiz spam veya flood yapmak yasaktır.</div>
+      <div class="rule">04 — Herhangi bir platformun, discord sunucusunun veya başka bir yerin reklamını yapmak yasaktır.</div>
+    </div>
+
+    <div id="oyun" class="rule-content">
+      <div class="rule">01 — Hile, x-ray, macro veya haksız avantaj sağlayan tüm modifikasyonlar yasaktır.</div>
+      <div class="rule">02 — Başkalarının yapılarına izinsiz zarar vermek, lonca/arsa grieflemek yasaktır.</div>
+      <div class="rule">03 — Oyun açıkları veya bug'ları bularak bunları kötüye kullanmak yasaktır (durumu yetkililere bildirmek zorunludur).</div>
+    </div>
   </div>
 </section>
 </main>
@@ -223,7 +269,25 @@ async function checkServerStatus() {
 
 checkServerStatus();
 setInterval(checkServerStatus, 60000);
-</script>
-</body>
-</html>
 
+function openRuleTab(evt, tabName) {
+  let contents = document.getElementsByClassName("rule-content");
+  for (let i = 0; i < contents.length; i++) {
+    contents[i].classList.remove("active");
+  }
+
+  let tabs = document.getElementsByClassName("rule-tab");
+  for (let i = 0; i < tabs.length; i++) {
+    tabs[i].classList.remove("active");
+  }
+
+  document.getElementById(tabName).classList.add("active");
+  evt.currentTarget.classList.add("active");
+}
+
+// Müzik Açma/Kapatma Fonksiyonu
+function toggleMusic() {
+  const music = document.getElementById("bgMusic");
+  const btn = document.getElementById("musicBtn");
+
+  if (music.paused
