@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bura Network | Minecraft</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  color:#fff;
+  min-height:100vh;
+  background:
+    linear-gradient(rgba(7,9,18,.78),rgba(7,9,18,.94)),
+    radial-gradient(circle at 50% 0%,#5b21b6 0,#111827 42%,#05060b 100%);
+  overflow-x:hidden;
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;
+  background-image:linear-gradient(45deg,rgba(255,255,255,.08) 25%,transparent 25%),
+  linear-gradient(-45deg,rgba(255,255,255,.08) 25%,transparent 25%);
+  background-size:32px 32px;
+}
+nav{
+  position:sticky;top:0;z-index:5;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 7%;background:rgba(5,6,11,.72);
+  backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.08)
+}
+.logo{font-size:24px;font-weight:900;letter-spacing:1px}
+.logo span{color:#a855f7}
+nav a{color:#ddd;text-decoration:none;margin-left:22px;font-weight:700}
+nav a:hover{color:#c084fc}
+.hero{
+  min-height:78vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:70px 20px 40px;position:relative
+}
+.badge{
+  display:inline-block;padding:8px 14px;border-radius:999px;
+  background:rgba(168,85,247,.15);border:1px solid rgba(192,132,252,.35);
+  color:#d8b4fe;font-weight:800;margin-bottom:18px
+}
+h1{font-size:clamp(48px,10vw,100px);line-height:.95;font-weight:1000}
+h1 span{color:#a855f7;text-shadow:0 0 30px rgba(168,85,247,.45)}
+.hero p{max-width:650px;margin:24px auto;color:#cbd5e1;font-size:18px;line-height:1.6}
+.buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{
+  border:0;border-radius:12px;padding:14px 22px;font-size:16px;
+  font-weight:900;cursor:pointer;text-decoration:none;display:inline-block
+}
+.primary{background:#9333ea;color:#fff;box-shadow:0 8px 30px rgba(147,51,234,.3)}
+.secondary{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.12)}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.server-box{
+  margin:20px auto 0;max-width:600px;padding:15px;border-radius:14px;
+  background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.1)
+}
+.ip{font-family:monospace;font-size:18px;color:#e9d5ff}
+section{padding:70px 7%;position:relative}
+.title{text-align:center;font-size:36px;margin-bottom:35px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1100px;margin:auto}
+.card{
+  padding:28px;border-radius:18px;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.09);text-align:center
+}
+.icon{font-size:38px;margin-bottom:12px}.card h3{margin-bottom:10px}
+.card p{color:#aeb7c7;line-height:1.5}
+.rules{max-width:800px;margin:auto}
+.rule{padding:17px 20px;margin:10px 0;border-radius:12px;background:rgba(255,255,255,.05);color:#dbe2ef}
+footer{text-align:center;padding:35px;color:#7f8a9c;border-top:1px solid rgba(255,255,255,.08)}
+.toast{
+  position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);
+  background:#111827;color:#fff;padding:12px 18px;border-radius:10px;
+  opacity:0;transition:.25s;z-index:20;border:1px solid #374151
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:750px){
+  nav{padding:15px 5%}nav div:last-child{display:none}
+  .grid{grid-template-columns:1fr}
+  section{padding:55px 5%}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">BURA <span>NETWORK</span></div>
+  <div>
+    <a href="#anasayfa">Ana Sayfa</a>
+    <a href="#ozellikler">Özellikler</a>
+    <a href="#kurallar">Kurallar</a>
+  </div>
+</nav>
+
+<main id="anasayfa">
+<section class="hero">
+  <div>
+    <div class="badge">⚡ BURA NETWORK</div>
+    <h1>OYUNA <span>GİR!</span></h1>
+    <p>Arkadaşlarınla eğlen, maceraya katıl ve Bura Network topluluğunun bir parçası ol!</p>
+
+    <div class="server-box">
+      <div style="font-size:13px;color:#94a3b8;margin-bottom:5px">SUNUCU IP ADRESİ</div>
+      <div class="ip" id="ip">buranw.aternos.me</div>
+    </div>
+
+    <div class="buttons" style="margin-top:18px">
+      <button class="btn primary" onclick="copyIP()">📋 IP'Yİ KOPYALA</button>
+      <a class="btn secondary" href="#ozellikler">✨ SUNUCUYU KEŞFET</a>
+    </div>
+  </div>
+</section>
+
+<section id="ozellikler">
+  <h2 class="title">Sunucu Özellikleri</h2>
+  <div class="grid">
+    <div class="card"><div class="icon">⚔️</div><h3>Macera</h3><p>Arkadaşlarınla birlikte Minecraft dünyasında maceraya atıl.</p></div>
+    <div class="card"><div class="icon">👥</div><h3>Topluluk</h3><p>Yeni oyuncularla tanış ve birlikte eğlen.</p></div>
+    <div class="card"><div class="icon">🏆</div><h3>Eğlence</h3><p>Etkinlikler, mücadeleler ve daha fazlası seni bekliyor.</p></div>
+  </div>
+</section>
+
+<section id="kurallar">
+  <h2 class="title">📜 Sunucu Kuralları</h2>
+  <div class="rules">
+    <div class="rule">01 — Diğer oyunculara saygılı ol.</div>
+    <div class="rule">02 — Hile ve haksız avantaj sağlayan programlar kullanma.</div>
+    <div class="rule">03 — Spam ve reklam yapma.</div>
+    <div class="rule">04 — Sunucu düzenini bozacak davranışlardan kaçın.</div>
+    <div class="rule">05 — Yetkililerin kararlarına uy.</div>
+  </div>
+</section>
+</main>
+
+<footer>
+  © 2026 Bura Network • Tüm hakları saklıdır.
+</footer>
+
+<div class="toast" id="toast">IP kopyalandı! 🎮</div>
+
+<script>
+function copyIP(){
+  const ip="buranw.aternos.me";
+  navigator.clipboard.writeText(ip).then(()=>{
+    const t=document.getElementById("toast");
+    t.classList.add("show");
+    setTimeout(()=>t.classList.remove("show"),1800);
+  }).catch(()=>alert("IP adresi: "+ip));
+}
+</script>
+</body>
+</html>
