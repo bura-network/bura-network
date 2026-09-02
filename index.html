@@ -1,485 +1,3 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bura Network — Klasik Survival</title>
-<style>
-/* Koyu Tema (Varsayılan) */
-:root {
-  --bg-color: #0b0f19;
-  --card-bg: #111827;
-  --card-border: rgba(255, 255, 255, 0.07);
-  --primary: #8b5cf6;
-  --primary-hover: #7c3aed;
-  --accent: #a78bfa;
-  --text-main: #f9fafb;
-  --text-muted: #9ca3af;
-  --header-bg: rgba(11, 15, 25, 0.95);
-  --sidebar-card: #111827;
-  --badge-bg: rgba(139, 92, 246, 0.2);
-}
-
-/* Açık Tema Sınıfı */
-body.light-theme {
-  --bg-color: #f3f4f6;
-  --card-bg: #ffffff;
-  --card-border: rgba(0, 0, 0, 0.08);
-  --primary: #7c3aed;
-  --primary-hover: #6d28d9;
-  --accent: #7c3aed;
-  --text-main: #1f2937;
-  --text-muted: #6b7280;
-  --header-bg: rgba(255, 255, 255, 0.95);
-  --sidebar-card: #ffffff;
-  --badge-bg: rgba(124, 58, 237, 0.1);
-}
-
-/* Pembe Tema Sınıfı */
-body.pink-theme {
-  --bg-color: #fff1f2;
-  --card-bg: #ffffff;
-  --card-border: rgba(244, 63, 94, 0.15);
-  --primary: #f43f5e;
-  --primary-hover: #e11d48;
-  --accent: #fb7185;
-  --text-main: #4c0519;
-  --text-muted: #9f1239;
-  --header-bg: rgba(255, 255, 255, 0.95);
-  --sidebar-card: #ffffff;
-  --badge-bg: rgba(244, 63, 94, 0.1);
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; transition: background 0.2s, color 0.2s, border-color 0.2s; }
-body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
-
-/* Üst Duyuru Bandı */
-.top-banner {
-  background: linear-gradient(90deg, var(--primary), var(--accent));
-  color: #fff;
-  text-align: center;
-  padding: 8px 15px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-}
-
-/* Navigasyon / Header */
-header {
-  background: var(--header-bg);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--card-border);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 5%;
-}
-
-.logo-area {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-weight: 900;
-  font-size: 20px;
-  letter-spacing: 0.5px;
-  color: var(--text-main);
-  text-decoration: none;
-}
-.logo-area span { color: var(--accent); }
-
-.nav-links {
-  display: flex;
-  gap: 25px;
-  align-items: center;
-}
-.nav-links a {
-  color: var(--text-muted);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 14px;
-  transition: color 0.2s;
-}
-.nav-links a:hover, .nav-links a.active { color: var(--accent); }
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.theme-toggle {
-  background: var(--badge-bg);
-  border: 1px solid var(--card-border);
-  color: var(--accent);
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: 0.2s;
-}
-.theme-toggle:hover { filter: brightness(1.1); }
-
-/* Ana İçerik Konteynerı */
-.container {
-  max-width: 1200px;
-  margin: 30px auto;
-  padding: 0 20px;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 30px;
-  flex: 1;
-}
-
-/* Sol Kategori Menüsü */
-aside {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.sidebar-card {
-  background: var(--sidebar-card);
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-}
-
-.sidebar-title {
-  font-size: 13px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  letter-spacing: 1px;
-  margin-bottom: 12px;
-  font-weight: 800;
-}
-
-.category-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.category-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  text-align: left;
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-decoration: none;
-}
-.category-btn:hover, .category-btn.active {
-  background: var(--badge-bg);
-  color: var(--accent);
-}
-
-.server-ip-widget, .server-status-widget {
-  background: var(--bg-color);
-  border-radius: 8px;
-  padding: 12px;
-  margin-top: 10px;
-  border: 1px solid var(--card-border);
-}
-.server-ip-widget .label, .server-status-widget .label { font-size: 11px; color: var(--text-muted); font-weight: bold; }
-.server-ip-widget .ip { font-family: monospace; font-size: 13px; color: var(--text-main); margin-top: 4px; font-weight: bold; word-break: break-all; }
-
-.status-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 6px;
-  font-size: 13px;
-  font-weight: bold;
-}
-.status-indicator {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #22c55e; /* Aktif yeşil renk */
-}
-.status-dot {
-  width: 8px;
-  height: 8px;
-  background-color: #22c55e;
-  border-radius: 50%;
-  box-shadow: 0 0 8px #22c55e;
-  animation: pulse 2s infinite;
-}
-@keyframes pulse {
-  0% { transform: scale(0.95); opacity: 0.8; }
-  50% { transform: scale(1.2); opacity: 1; }
-  100% { transform: scale(0.95); opacity: 0.8; }
-}
-
-/* Sağ İçerik Alanı */
-.content-area {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.page-header-card {
-  background: var(--sidebar-card);
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 25px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-}
-.page-header-card h1 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
-.page-header-card p { font-size: 14px; color: var(--text-muted); }
-
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 20px;
-}
-
-.product-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  transition: 0.2s;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-}
-.product-card:hover {
-  border-color: var(--accent);
-  transform: translateY(-3px);
-}
-
-.badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: var(--badge-bg);
-  color: var(--accent);
-  font-size: 10px;
-  font-weight: 800;
-  padding: 3px 8px;
-  border-radius: 6px;
-  border: 1px solid var(--card-border);
-}
-
-.product-icon {
-  font-size: 36px;
-  margin-bottom: 12px;
-}
-
-.product-card h3 {
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.product-card p {
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.4;
-  margin-bottom: 15px;
-}
-
-/* Footer */
-footer {
-  text-align: center;
-  padding: 30px;
-  color: var(--text-muted);
-  font-size: 12px;
-  border-top: 1px solid var(--card-border);
-  margin-top: 50px;
-}
-
-/* Bildirim Toast */
-.toast {
-  position: fixed;
-  bottom: 25px;
-  left: 50%;
-  transform: translate(-50%, 20px);
-  background: var(--card-bg);
-  color: var(--text-main);
-  border: 1px solid var(--card-border);
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: bold;
-  opacity: 0;
-  transition: 0.3s;
-  pointer-events: none;
-  z-index: 1000;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-}
-.toast.show { opacity: 1; transform: translate(-50%, 0); }
-
-@media(max-width: 850px) {
-  .container { grid-template-columns: 1fr; }
-  .nav-links { display: none; }
-}
-</style>
-</head>
-<body>
-
-  <div class="top-banner">
-    ⚔️ Claim Sistemi Yok • Saf Klasik Survival Deneyimi! buranw.aternos.me
-  </div>
-
-  <header>
-    <a href="#" class="logo-area">
-      BURA <span>NETWORK</span>
-    </a>
-    <div class="nav-links">
-      <a href="#" class="active" onclick="switchTab('general', this); return false;">Ana Sayfa</a>
-      <a href="https://whatsapp.com/channel/0029Vb8scio6BIEdFcgGQT3x" target="_blank">WhatsApp Kanalı</a>
-      <a href="#" onclick="switchTab('rules', this); return false;">Kurallar</a>
-    </div>
-    <div class="header-right">
-      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="Tema Değiştir">
-        🌙
-      </button>
-    </div>
-  </header>
-
-  <div class="container">
-    <!-- Sol Kategori Paneli -->
-    <aside>
-      <div class="sidebar-card">
-        <div class="sidebar-title">Menü</div>
-        <div class="category-list">
-          <button class="category-btn active" onclick="switchTab('general', this)"><span>🌲 Genel Bakış</span></button>
-          <button class="category-btn" onclick="switchTab('rules', this)"><span>📜 Sunucu Kuralları</span></button>
-          <a href="https://whatsapp.com/channel/0029Vb8scio6BIEdFcgGQT3x" target="_blank" class="category-btn"><span>📢 WhatsApp Kanalı</span></a>
-        </div>
-      </div>
-
-      <div class="sidebar-card">
-        <div class="sidebar-title">Sunucu Bilgisi</div>
-        <div class="server-status-widget">
-          <div class="label">ANLIK DURUM</div>
-          <div class="status-row">
-            <div class="status-indicator">
-              <span class="status-dot"></span> Aktif
-            </div>
-            <span id="playerCount" style="color:var(--text-main);">0 / 20</span>
-          </div>
-        </div>
-        <div class="server-ip-widget">
-          <div class="label">SUNUCU IP</div>
-          <div class="ip" id="serverIp" onclick="copyIP()" style="cursor:pointer;" title="Kopyalamak için tıkla">buranw.aternos.me 📋</div>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Sağ İçerik Alanı -->
-    <main class="content-area">
-      <div class="page-header-card" id="pageHeader">
-        <h1 id="headerTitle">Klasik Survival Dünyası</h1>
-        <p id="headerDesc">Claim korumalarının olmadığı, tamamen saf, adil ve dostane yardımlaşmaya dayalı hayatta kalma deneyimi Bura Network'te seni bekliyor.</p>
-      </div>
-
-      <div class="products-grid" id="contentGrid">
-        
-        <!-- Genel Bakış Kartları -->
-        <div class="product-card" data-tab="general">
-          <span class="badge">ÖZELLİK</span>
-          <div>
-            <div class="product-icon">🛡️</div>
-            <h3>Claimsiz Yapı</h3>
-            <p>Bölgeleri koruma altına alan claim sistemi yok; tamamen geleneksel ve güvene dayalı yapılaşma.</p>
-          </div>
-        </div>
-
-        <div class="product-card" data-tab="general">
-          <span class="badge">SİSTEM</span>
-          <div>
-            <div class="product-icon">🤝</div>
-            <h3>Dostane Topluluk</h3>
-            <p>Yardımlaşmanın ön planda olduğu, oyuncuların birlikte devasa yapılar inşa ettiği samimi ortam.</p>
-          </div>
-        </div>
-
-        <div class="product-card" data-tab="general">
-          <span class="badge">ADİL</span>
-          <div>
-            <div class="product-icon">⚖️</div>
-            <h3>P2W Karşıtı</h3>
-            <p>Para ile üstünlük sağlatan hiçbir ayrıcalık bulunmaz. Herkes tamamen eşit şartlarda yarışır.</p>
-          </div>
-        </div>
-
-        <div class="product-card" data-tab="general">
-          <div>
-            <div class="product-icon">🗺️</div>
-            <h3>Sınırsız Keşif</h3>
-            <p>Geniş dünya sınırlarıyla yeni biyomları keşfet, kendi üssünü gizli noktalarda kur.</p>
-          </div>
-        </div>
-
-        <!-- Kurallar Kartları -->
-        <div class="product-card" data-tab="rules" style="display:none;">
-          <span class="badge">KURAL #1</span>
-          <div>
-            <div class="product-icon">🚫</div>
-            <h3>Hile & Mod Yasak</h3>
-            <p>X-Ray, KillAura, Fly ve oyun dengesini bozan her türlü üçüncü parti hile yazılımı kalıcı yasak sebebidir.</p>
-          </div>
-        </div>
-
-        <div class="product-card" data-tab="rules" style="display:none;">
-          <span class="badge">KURAL #2</span>
-          <div>
-            <div class="product-icon">💬</div>
-            <h3>Küfür ve Hakaret</h3>
-            <p>Sohbet içinde diğer oyunculara ağır hakaret, argo, din/siyaset tartışması ve taciz kesinlikle yasaktır.</p>
-          </div>
-        </div>
-
-        <div class="product-card" data-tab="rules" style="display:none;">
-          <span class="badge">KURAL #3</span>
-          <div>
-            <div class="product-icon">🏚️</div>
-            <h3>Tuzak & Griefing</h3>
-            <p>Claimsiz sunucularda yapı yaparken dikkatli olun; ancak açıkça yasaklı alanlara zarar vermek yasaktır.</p>
-          </div>
-        </div>
-
-        <div class="product-card" data-tab="rules" style="display:none;">
-          <span class="badge">KURAL #4</span>
-          <div>
-            <div class="product-icon">📢</div>
-            <h3>Reklam Yapmak</h3>
-            <p>Farklı sunucuların, Discord kanallarının veya dış platformların reklamını yapmak cezalandırılır.</p>
-          </div>
-        </div>
-
-      </div>
-    </main>
-  </div>
-
-  <footer>
-    © 2026 Bura Network • Tüm hakları saklıdır. Mojang AB ile ilişkilendirilmemiştir.
-  </footer>
-
-  <div class="toast" id="toast">İşlem başarılı!</div>
-
-  <script>
     function copyIP() {
       navigator.clipboard.writeText("buranw.aternos.me");
       showToast("Sunucu IP adresi kopyalandı! 📋");
@@ -495,7 +13,6 @@ footer {
     }
 
     function switchTab(tabName, element) {
-      // Sol menü buton aktiflik yönetimi
       document.querySelectorAll('.category-btn').forEach(btn => {
         if(!btn.getAttribute('href')) btn.classList.remove('active');
       });
@@ -506,7 +23,6 @@ footer {
         if(targetBtn) targetBtn.classList.add('active');
       }
 
-      // Başlık ve Açıklama Değişimi
       const titleEl = document.getElementById('headerTitle');
       const descEl = document.getElementById('headerDesc');
 
@@ -518,7 +34,6 @@ footer {
         descEl.innerText = "Claim korumalarının olmadığı, tamamen saf, adil ve dostane yardımlaşmaya dayalı hayatta kalma deneyimi Bura Network'te seni bekliyor.";
       }
 
-      // Kartları Göster / Gizle
       const cards = document.querySelectorAll('.product-card');
       cards.forEach(card => {
         if(card.getAttribute('data-tab') === tabName) {
@@ -529,40 +44,66 @@ footer {
       });
     }
 
-    // Basit bir simülasyon ile anlık oyuncu sayısını rastgele gösterelim (istersen gerçek API ile de bağlanabilir)
-    function updatePlayerCount() {
+    // Aternos sunucu durumunu gerçek zamanlı kontrol eden fonksiyon
+    async function checkServerStatus() {
+      const serverIP = "buranw.aternos.me";
+      const statusIndicator = document.querySelector('.status-indicator');
+      const statusDot = document.querySelector('.status-dot');
       const countEl = document.getElementById('playerCount');
-      const randomPlayers = Math.floor(Math.random() * 8) + 3; // 3 ile 10 arası oyuncu
-      countEl.innerText = `${randomPlayers} / 20`;
-    }
-    setInterval(updatePlayerCount, 10000);
-    updatePlayerCount();
 
-    // 3'lü Tema Döngüsü (Koyu -> Açık -> Pembe)
+      try {
+        const response = await fetch(`https://api.mcsrvstat.us/2/${serverIP}`);
+        const data = await response.json();
+
+        if (data.online) {
+          // Sunucu AÇIK
+          statusIndicator.style.color = "#22c55e";
+          statusDot.style.backgroundColor = "#22c55e";
+          statusDot.style.boxShadow = "0 0 8px #22c55e";
+          statusIndicator.innerHTML = `<span class="status-dot" style="background-color: #22c55e; box-shadow: 0 0 8px #22c55e; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span> Aktif`;
+          countEl.innerText = `${data.players.online} / ${data.players.max}`;
+        } else {
+          // Sunucu KAPALI
+          statusIndicator.style.color = "#ef4444";
+          statusDot.style.backgroundColor = "#ef4444";
+          statusDot.style.boxShadow = "0 0 8px #ef4444";
+          statusIndicator.innerHTML = `<span class="status-dot" style="background-color: #ef4444; box-shadow: 0 0 8px #ef4444; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span> Kapalı`;
+          countEl.innerText = `0 / 20`;
+        }
+      } catch (error) {
+        // Hata durumunda (API erişilemezse vs.) kapalı göster
+        statusIndicator.style.color = "#ef4444";
+        statusDot.style.backgroundColor = "#ef4444";
+        statusIndicator.innerHTML = `<span class="status-dot" style="background-color: #ef4444; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span> Kapalı`;
+        countEl.innerText = `0 / 20`;
+      }
+    }
+
+    // Sayfa açıldığında ve her 15 saniyede bir durumu kontrol et
+    setInterval(checkServerStatus, 15000);
+    checkServerStatus();
+
+    // Tema Yönetimi
     function toggleTheme() {
       const body = document.body;
       const themeBtn = document.getElementById('themeBtn');
       
       if (!body.classList.contains('light-theme') && !body.classList.contains('pink-theme')) {
-        // Koyu -> Açık
         body.classList.add('light-theme');
         themeBtn.innerText = '☀️';
         localStorage.setItem('bura_theme', 'light');
       } else if (body.classList.contains('light-theme')) {
-        // Açık -> Pembe
         body.classList.remove('light-theme');
         body.classList.add('pink-theme');
         themeBtn.innerText = '🌸';
         localStorage.setItem('bura_theme', 'pink');
       } else {
-        // Pembe -> Koyu
         body.classList.remove('pink-theme');
         themeBtn.innerText = '🌙';
         localStorage.setItem('bura_theme', 'dark');
       }
     }
 
-    // Sayfa açıldığında kayıtlı temayı yükleme
     window.onload = () => {
       const savedTheme = localStorage.getItem('bura_theme');
       const themeBtn = document.getElementById('themeBtn');
@@ -577,6 +118,3 @@ footer {
         themeBtn.innerText = '🌙';
       }
     };
-  </script>
-</body>
-</html>
